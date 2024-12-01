@@ -1,0 +1,19 @@
+Newspeak3
+'Root'
+class BigBrotherTrustApp packageUsing: manifest = (
+	|
+    private IndexedDB = manifest IndexedDB.
+	private BigBrotherTrust = manifest BigBrotherTrust.
+    |
+) (
+public main: platform <Platform> args: args = (
+	|
+    idb =  IndexedDB usingPlatform: platform.
+	b = BigBrotherTrust usingPlatform: platform indexedDB: idb.
+ 	s = b BankAccountSubject onModel: b.
+    |
+    s openDB.
+	platform hopscotch HopscotchWindow openSubject: s.
+)
+) : (
+)
