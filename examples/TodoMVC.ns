@@ -184,6 +184,9 @@ public refresh = (
 public showAlert: s <String> = (
 	alert: s
 )
+public title = (
+	^'Todo List'
+)
 ) : (
 )
 public class TodoMVCSubject onModel: l = IDBSubject onModel: l (
