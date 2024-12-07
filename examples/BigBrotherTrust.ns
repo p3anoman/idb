@@ -1,6 +1,12 @@
 Newspeak3
 'Root'
-class BigBrotherTrust usingPlatform: platform indexedDB: idb = (
+class BigBrotherTrust usingPlatform: platform indexedDB: idb 
+(* :exemplar: 
+[| indexeddb = IndexedDB usingPlatform: platform. |
+	BigBrotherTrust usingPlatform: platform indexedDB: indexeddb
+] value.
+*)
+= (
 |
 	private List = platform collections List.
     private Color = platform graphics Color.
@@ -11,12 +17,11 @@ class BigBrotherTrust usingPlatform: platform indexedDB: idb = (
 	public JSObject = platform js global at: 'Object'.
     private Date = platform js global at: 'Date'.
     private JSNumber = platform js global at: 'Number'.
-    private Math = platform js global at: 'Math'.
     private crypto = platform js global at: 'crypto'.
 
 	private indexedDB = idb.
     private IDBObject = indexedDB IDBObject.
-    private IDBSubject = platform hopscotch core Subject mixinApply: indexedDB IDBSubject.
+    private IDBSubject = indexedDB IDBSubject.
 
     public version = 1.
 	public transactions = List new.
@@ -26,7 +31,9 @@ public class BankTransaction id: uuid
 													amount: a <String>
                                                     onDate: d <Integer> 
                                                     memo: m <String>
-                                                    reconciled: r <Boolean> = IDBObject uuid: uuid (
+                                                    reconciled: r <Boolean> 
+(* :exemplar: BankTransaction id: crypto randomUUID amount: 100 onDate: Date now memo: 'exemplar memo' reconciled: false *)
+= IDBObject uuid: uuid (
 	|
     public amount = a.
     public txDate = d.
@@ -193,11 +200,6 @@ add: b <BankTransaction> = (
                 nil ]
             onError: [ :e | presenter alert: ((e at: 'error') at: 'message'). nil ]
 )
-public test1000 = (
-	1 to: 1000 do: [ :i | | b a |
-    	b:: BankTransaction amount: (Math random: 100) * 100 * 100.
-    	super add: b ]
-)
 transact: amt withMemo: m = (| b s d |
 		d:: Date now.
 		b:: BankTransaction id: crypto randomUUID amount: amt onDate: d memo: m reconciled: false.
@@ -351,8 +353,6 @@ public transact: b <BankTransaction> = (
 	^transactions add: b
 )
 public balance = (| rslt = 0.0. |
-	(* 1 to: (transactions size) do: [ :i | rslt: rslt + ((transaction at: i) amount) ] .
-		^rslt *) 
         ^transactions inject: 0.0 into: [ :s :t | s + t amount ].
 	)
 ) : (
